@@ -24,6 +24,7 @@ namespace KataPrograms.Tests
             Assert.False(Kata.ValidPhoneNumber("(123) 4567890"));
 
             Assert.False(Kata.ValidPhoneNumber("(123)   456-7890"));
+            Assert.False(Kata.ValidPhoneNumber("(123) $56-7890"));
         }
     }
 }
