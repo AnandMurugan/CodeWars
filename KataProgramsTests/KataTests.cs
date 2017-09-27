@@ -7,7 +7,10 @@ namespace KataPrograms.Tests
         [Fact()]
         public void ValidPhoneNumberTest()
         {
+            //Test happy path
             Assert.True(Kata.ValidPhoneNumber("(123) 456-7890"));
+            
+            //Negative tests
             Assert.False(Kata.ValidPhoneNumber("ABC(123) 456-7890test"));
             Assert.False(Kata.ValidPhoneNumber("(111) 5X5-2345"));
             Assert.True(Kata.ValidPhoneNumber("(010) 515-2345"));
