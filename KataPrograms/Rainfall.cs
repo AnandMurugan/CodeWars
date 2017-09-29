@@ -20,11 +20,11 @@ namespace KataPrograms
             "Caracas", "Madrid", "Berlin", "Lon"
         };
 
-        private static Dictionary<string, List<Record>> _townsDictionary;
+        public static Dictionary<string, List<Record>> TownsDictionary = new Dictionary<string, List<Record>>();
 
         private static Dictionary<string, List<Record>> GetTowns()
         {
-            return _townsDictionary ?? new Dictionary<string, List<Record>>();
+            return TownsDictionary ?? new Dictionary<string, List<Record>>();
         }
 
         public static double Mean(string townName, string strng)
@@ -64,7 +64,7 @@ namespace KataPrograms
         {
             var existing = new List<Record>();
             if (GetTowns().ContainsKey(townName))
-                existing = _townsDictionary[townName];
+                existing = TownsDictionary[townName];
             return existing;
         }
 
@@ -74,6 +74,7 @@ namespace KataPrograms
             foreach (var townvalue in townvalues)
             {
                 var rainfallvalues = townvalue.Split(':')[1].Split(',');
+                var townName = townvalue.Split(':')[0];
                 var rainfallRecords = rainfallvalues.Select(rainfallvalue => new Record
                     {
                         Month = rainfallvalue.Split(' ')[0],
@@ -81,7 +82,10 @@ namespace KataPrograms
                     })
                     .ToList();
 
-                GetTowns().Add(townvalue.Split(':')[0], rainfallRecords);
+                if (!GetTowns().ContainsKey(townName))
+                    GetTowns().Add(townName, rainfallRecords);
+                else
+                    GetTowns()[townName] = rainfallRecords;
             }
         }
     }
