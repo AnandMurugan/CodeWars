@@ -14,29 +14,17 @@ namespace KataPrograms
 
     public class Rainfall
     {
-        private static readonly string[] Alltowns =
-        {
-            "Rome", "London", "Paris", "NY", "Vancouver", "Sydney", "Bangkok", "Tokyo", "Beijing", "Lima", "Montevideo",
-            "Caracas", "Madrid", "Berlin", "Lon"
-        };
-
-        public static Dictionary<string, List<Record>> TownsDictionary = new Dictionary<string, List<Record>>();
-
-        private static Dictionary<string, List<Record>> GetTowns()
-        {
-            return TownsDictionary ?? new Dictionary<string, List<Record>>();
-        }
-
         public static double Mean(string townName, string strng)
         {
             if (string.IsNullOrEmpty(strng))
                 return -1;
 
-            if (!Alltowns.Contains(townName))
-                return -1;
+            Dictionary<string, List<Record>> townsDictionary;
+            Parse(strng, out townsDictionary);
 
-            Parse(strng);
-            var townRecords = GetTownRecords(townName);
+            if (!townsDictionary.ContainsKey(townName))
+                return -1;
+            var townRecords = townsDictionary[townName];
             var sum = townRecords.Sum(townRecord => townRecord.Rainfallcm);
             var avg = sum / townRecords.Count;
 
@@ -48,28 +36,22 @@ namespace KataPrograms
             if (string.IsNullOrEmpty(strng))
                 return -1;
 
-            if (!Alltowns.Contains(townName))
-                return -1;
+            Dictionary<string, List<Record>> townsDictionary;
+            Parse(strng, out townsDictionary);
 
-            Parse(strng);
-            var townRecords = GetTownRecords(townName);
+            if (!townsDictionary.ContainsKey(townName))
+                return -1;
+            var townRecords = townsDictionary[townName];
             var sum = townRecords.Sum(townRecord => townRecord.Rainfallcm);
-            var avg = sum / townRecords.Count();
+            var avg = sum / townRecords.Count;
             var variance = townRecords.Sum(townRecord => (townRecord.Rainfallcm - avg) * (townRecord.Rainfallcm - avg));
 
             return variance / townRecords.Count;
         }
 
-        private static List<Record> GetTownRecords(string townName)
+        private static void Parse(string strng, out Dictionary<string, List<Record>> townsDictionary)
         {
-            var existing = new List<Record>();
-            if (GetTowns().ContainsKey(townName))
-                existing = TownsDictionary[townName];
-            return existing;
-        }
-
-        public static void Parse(string strng)
-        {
+            townsDictionary = new Dictionary<string, List<Record>>();
             var townvalues = strng.Split('\n');
             foreach (var townvalue in townvalues)
             {
@@ -82,10 +64,8 @@ namespace KataPrograms
                     })
                     .ToList();
 
-                if (!GetTowns().ContainsKey(townName))
-                    GetTowns().Add(townName, rainfallRecords);
-                else
-                    GetTowns()[townName] = rainfallRecords;
+                if (townsDictionary != null && !townsDictionary.ContainsKey(townName))
+                    townsDictionary.Add(townName, rainfallRecords);
             }
         }
     }

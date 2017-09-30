@@ -52,9 +52,7 @@ namespace KataPrograms.Tests
         {
             var inrange = Math.Abs(act - exp) <= 1e-2;
             if (inrange == false)
-            {
                 Console.WriteLine("abs(actual - expected) must be <= 1e-2. Expected was " + exp + ", but got " + act);
-            }
             Assert.True(inrange);
         }
 
@@ -87,25 +85,17 @@ namespace KataPrograms.Tests
         }
 
         [Fact]
+        public void Mean_PartialMatch_Test()
+        {
+            var result = Rainfall.Mean("Rom", data1);
+            Assert.Equal(-1, result);
+        }
+
+        [Fact]
         public void Variance_Test()
         {
             var result = Rainfall.Variance("London", data);
             Assert.True(Math.Abs(57.42833333333374 - result) < 1e-2);
-        }
-
-        [Fact]
-        public static void test1()
-        {
-            Console.WriteLine("Fixed Tests: mean data");
-            assertFuzzyEquals(Rainfall.Mean("London", RainfallTests.data), 51.199999999999996);
-            assertFuzzyEquals(Rainfall.Mean("Beijing", RainfallTests.data), 52.416666666666664);
-        }
-        [Fact]
-        public static void test2()
-        {
-            Console.WriteLine("Fixed Tests: variance data");
-            assertFuzzyEquals(Rainfall.Variance("London", RainfallTests.data), 57.42833333333374);
-            assertFuzzyEquals(Rainfall.Variance("Beijing", RainfallTests.data), 4808.37138888889);
         }
     }
 }
